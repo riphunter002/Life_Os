@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life OS - Meu Painel</title>
+    <style>
+        
+    </style>
+    <!-- Importando a biblioteca Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- ==================== JANELA MODAL: ONBOARDING / MARCO ZERO ==================== -->
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Bem-vindo ao Life OS 👋</h2>
+            <p>Configure seu perfil inicial para estabelecermos a sua linha de base e acompanhar sua evolução.</p>
+
+            <form id="profileForm">
+                <label for="userName">Seu Nome:</label>
+                <input type="text" id="userName" placeholder="Ex: Neilton" required>
+
+                <label for="userHeight">Sua Altura (cm):</label>
+                <input type="number" id="userHeight" placeholder="Ex: 168" required>
+
+                <label for="userInitialWeight">Peso Inicial / Marco Zero (kg):</label>
+                <input type="number" id="userInitialWeight" step="0.1" placeholder="Ex: 78.5" required>
+
+                <button type="submit">Salvar e Iniciar Jornada</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MENU LATERAL ==================== -->
+    <nav class="sidebar">
+        <h2>Life OS</h2>
+        <a href="index.html">🏠 Visão Geral</a>
+        <a href="#">🏋️ Saúde & Treino</a>
+        <a href="#">📅 Calendário</a>
+        <a href="diario.html">📖 Meu Diário</a>
+    </nav>
+
+    <!-- ==================== PAINEL PRINCIPAL ==================== -->
+    <main class="main-content">
+        <div class="header">
+            <h1 id="welcomeTitle">Resumo de Hoje</h1>
+            <p id="profileSummary">Aguardando dados de perfil...</p>
+        </div>
+
+        <div class="dashboard-grid">
+
+            <!-- Card 1: Registro Diário de Saúde -->
+            <div class="card">
+                <h3>Monitoramento Físico</h3>
+                <label for="dailyWeight">Peso do dia (kg):</label>
+                <input type="number" id="dailyWeight" step="0.1" placeholder="Ex: 78.2">
+
+                <label for="dailyCalories">Calorias consumidas:</label>
+                <input type="number" id="dailyCalories" placeholder="Ex: 2400">
+
+                <button type="button" id="btnSaveHealth">Salvar Registro</button>
+
+                <p id="healthFeedback"
+                    style="margin-top: 15px; font-weight: bold; font-size: 14px; text-align: center;"></p>
+            </div>
+
+            <!-- Card 2: Rotina de Treino -->
+            <div class="card">
+                <h3>Treino de Hoje</h3>
+                <p><strong>Horário:</strong> 06:00 às 07:50</p>
+
+                <p><strong>Status:</strong> <span id="treinoStatus"
+                        style="color: #e74c3c; font-weight: bold;">Pendente</span></p>
+
+                <br>
+                <button type="button" id="btnTreino" style="background-color: #27ae60;">Marcar como Concluído</button>
+            </div>
+
+            <!-- Card 3: Diário Rápido -->
+            <div class="card">
+                <h3>Como foi o dia?</h3>
+                <textarea id="textoDiario" rows="4"
+                    placeholder="Escreva os principais acontecimentos ou reflexões de hoje..."></textarea>
+                <button type="button" id="btnSalvarDiario">Salvar Registro</button>
+                <p id="diarioFeedback" style="margin-top: 10px; font-size: 13px; font-weight: bold;"></p>
+            </div>
+            
+            <!-- Card 4: Gráfico de Evolução -->
+            <div class="card" style="flex: 1 1 100%;">
+                <h3>📉 Evolução do Marco Zero</h3>
+                <canvas id="graficoPeso" height="80"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
+   
+</body>
+</html>
