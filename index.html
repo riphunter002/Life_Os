@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Life OS - Meu Painel</title>
-    <style>
-        
-    </style>
+
+    <!-- Linkando o arquivo CSS externo da maneira correta (sem a tag style) -->
+    <link rel="stylesheet" href="style.css">
+
     <!-- Importando a biblioteca Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -87,7 +89,7 @@
                 <button type="button" id="btnSalvarDiario">Salvar Registro</button>
                 <p id="diarioFeedback" style="margin-top: 10px; font-size: 13px; font-weight: bold;"></p>
             </div>
-            
+
             <!-- Card 4: Gráfico de Evolução -->
             <div class="card" style="flex: 1 1 100%;">
                 <h3>📉 Evolução do Marco Zero</h3>
@@ -97,6 +99,7 @@
     </main>
 
     <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
-   
+    <script src="script.js"></script>
 </body>
-</html>
+
+</html> 
