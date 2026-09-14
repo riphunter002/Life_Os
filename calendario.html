@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life OS · Meu Diário</title>
+    <title>Life OS · Calendário</title>
 
     <script>
         (function () {
@@ -37,8 +37,8 @@
             <div class="sidebar-nav">
                 <a href="index.html" class="nav-link"><i data-lucide="home"></i><span>Visão Geral</span></a>
                 <a href="treino.html" class="nav-link"><i data-lucide="dumbbell"></i><span>Saúde & Treino</span></a>
-                <a href="calendario.html" class="nav-link"><i data-lucide="calendar"></i><span>Calendário</span></a>
-                <a href="diario.html" class="nav-link active"><i data-lucide="book-open"></i><span>Meu Diário</span></a>
+                <a href="calendario.html" class="nav-link active"><i data-lucide="calendar"></i><span>Calendário</span></a>
+                <a href="diario.html" class="nav-link"><i data-lucide="book-open"></i><span>Meu Diário</span></a>
             </div>
             <div class="sidebar-footer">
                 <a href="configuracoes.html" class="nav-link"><i data-lucide="settings"></i><span>Configurações</span></a>
@@ -49,8 +49,8 @@
             <header class="topbar">
                 <button class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu"><i data-lucide="menu"></i></button>
                 <div class="topbar-title">
-                    <h1>Histórico do Diário</h1>
-                    <p>Todas as suas reflexões e anotações diárias salvas</p>
+                    <h1>Calendário</h1>
+                    <p>Veja diário, treinos e peso registrados em cada dia</p>
                 </div>
                 <div class="topbar-actions">
                     <button class="icon-btn" id="themeToggleBtn" aria-label="Alternar tema"><i data-lucide="moon"></i></button>
@@ -58,13 +58,34 @@
             </header>
 
             <main class="page-content">
-                <div id="historicoContainer" class="history-grid"></div>
+                <div class="card">
+                    <div class="calendar-nav">
+                        <button type="button" class="icon-btn" id="mesAnterior" aria-label="Mês anterior"><i data-lucide="chevron-left"></i></button>
+                        <h2 id="mesAtualLabel">Mês</h2>
+                        <button type="button" class="icon-btn" id="mesSeguinte" aria-label="Próximo mês"><i data-lucide="chevron-right"></i></button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btnHoje" style="margin-left: auto;">Hoje</button>
+                    </div>
+
+                    <div class="calendar-grid" id="calendarWeekdays"></div>
+                    <div class="calendar-grid" id="calendarGrid" style="margin-top: 8px;"></div>
+                </div>
             </main>
         </div>
     </div>
 
+    <!-- Modal de detalhes do dia -->
+    <div id="dayModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-close-row">
+                <button type="button" class="icon-btn" id="closeDayModal" aria-label="Fechar"><i data-lucide="x"></i></button>
+            </div>
+            <h2 id="dayModalTitle">Data</h2>
+            <div id="dayModalBody"></div>
+        </div>
+    </div>
+
     <script src="utils.js"></script>
-    <script src="diario.js"></script>
+    <script src="calendario.js"></script>
 </body>
 
 </html>

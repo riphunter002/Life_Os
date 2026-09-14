@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life OS · Saúde & Treino</title>
+
+    <script>
+        (function () {
+            var pref = localStorage.getItem('lifeOS_theme') || 'system';
+            var theme = pref === 'system'
+                ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                : pref;
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%236366f1'/%3E%3Ctext x='12' y='17' font-size='13' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="app-shell">
+        <div id="navOverlay" class="nav-overlay"></div>
+
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand"><span class="brand-mark">L</span><span class="brand-name">Life OS</span></div>
+                <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Fechar menu"><i data-lucide="x"></i></button>
+            </div>
+            <div class="sidebar-nav">
+                <a href="index.html" class="nav-link"><i data-lucide="home"></i><span>Visão Geral</span></a>
+                <a href="treino.html" class="nav-link active"><i data-lucide="dumbbell"></i><span>Saúde & Treino</span></a>
+                <a href="calendario.html" class="nav-link"><i data-lucide="calendar"></i><span>Calendário</span></a>
+                <a href="diario.html" class="nav-link"><i data-lucide="book-open"></i><span>Meu Diário</span></a>
+            </div>
+            <div class="sidebar-footer">
+                <a href="configuracoes.html" class="nav-link"><i data-lucide="settings"></i><span>Configurações</span></a>
+            </div>
+        </nav>
+
+        <div class="app-main">
+            <header class="topbar">
+                <button class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu"><i data-lucide="menu"></i></button>
+                <div class="topbar-title">
+                    <h1>Saúde & Treino</h1>
+                    <p>Configure sua rotina semanal e acompanhe sua consistência</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="icon-btn" id="themeToggleBtn" aria-label="Alternar tema"><i data-lucide="moon"></i></button>
+                </div>
+            </header>
+
+            <main class="page-content">
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i data-lucide="flame"></i></div>
+                        <div>
+                            <div class="stat-value" id="statStreakAtual">0 dias</div>
+                            <div class="stat-label">Sequência atual</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i data-lucide="trophy"></i></div>
+                        <div>
+                            <div class="stat-value" id="statMelhorStreak">0 dias</div>
+                            <div class="stat-label">Melhor sequência</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i data-lucide="check-circle-2"></i></div>
+                        <div>
+                            <div class="stat-value" id="statTotalTreinos">0</div>
+                            <div class="stat-label">Total de treinos concluídos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Treino de hoje -->
+                    <div class="card">
+                        <div class="card-header"><i data-lucide="dumbbell"></i><h3>Treino de Hoje</h3></div>
+                        <p id="planoHojeDesc" style="margin-bottom: 12px; color: var(--text-secondary); font-size: 13.5px;"></p>
+                        <p style="margin-bottom: 10px; font-size: 13.5px;">
+                            Status: <span id="treinoStatus" class="badge badge-danger">Pendente</span>
+                        </p>
+                        <button type="button" id="btnTreino" class="btn btn-primary btn-block">Marcar como concluído</button>
+                    </div>
+
+                    <!-- Plano semanal -->
+                    <div class="card card-full">
+                        <div class="card-header"><i data-lucide="calendar-check"></i><h3>Plano Semanal</h3></div>
+                        <div class="week-plan-grid" id="weekPlanGrid"></div>
+                        <button type="button" id="btnSalvarPlano" class="btn btn-primary" style="margin-top: 16px;">Salvar plano</button>
+                        <p id="planoFeedback" class="feedback"></p>
+                    </div>
+
+                    <!-- Histórico (heatmap) -->
+                    <div class="card card-full">
+                        <div class="card-header"><i data-lucide="grid-3x3"></i><h3>Últimos 84 dias</h3></div>
+                        <div class="heatmap" id="heatmapTreino"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="treino.js"></script>
+</body>
+
+</html>

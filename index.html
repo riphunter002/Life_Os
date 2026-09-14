@@ -4,102 +4,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life OS - Meu Painel</title>
+    <title>Life OS · Visão Geral</title>
 
-    <!-- Linkando o arquivo CSS externo da maneira correta (sem a tag style) -->
+    <!-- Aplica o tema salvo antes da primeira renderização, evitando "flash" de tema errado -->
+    <script>
+        (function () {
+            var pref = localStorage.getItem('lifeOS_theme') || 'system';
+            var theme = pref === 'system'
+                ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                : pref;
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%236366f1'/%3E%3Ctext x='12' y='17' font-size='13' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
-    <!-- Importando a biblioteca Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
 
-    <!-- ==================== JANELA MODAL: ONBOARDING / MARCO ZERO ==================== -->
-    <div id="profileModal" class="modal-overlay">
+    <!-- ==================== ONBOARDING / MARCO ZERO ==================== -->
+    <div id="profileModal" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>Bem-vindo ao Life OS 👋</h2>
             <p>Configure seu perfil inicial para estabelecermos a sua linha de base e acompanhar sua evolução.</p>
 
             <form id="profileForm">
-                <label for="userName">Seu Nome:</label>
-                <input type="text" id="userName" placeholder="Ex: Neilton" required>
-
-                <label for="userHeight">Sua Altura (cm):</label>
-                <input type="number" id="userHeight" placeholder="Ex: 168" required>
-
-                <label for="userInitialWeight">Peso Inicial / Marco Zero (kg):</label>
-                <input type="number" id="userInitialWeight" step="0.1" placeholder="Ex: 78.5" required>
-
-                <button type="submit">Salvar e Iniciar Jornada</button>
+                <div class="form-group">
+                    <label for="userName">Seu nome</label>
+                    <input type="text" id="userName" placeholder="Ex: Neilton" required>
+                </div>
+                <div class="form-group">
+                    <label for="userHeight">Sua altura (cm)</label>
+                    <input type="number" id="userHeight" placeholder="Ex: 168" required>
+                </div>
+                <div class="form-group">
+                    <label for="userInitialWeight">Peso inicial / Marco Zero (kg)</label>
+                    <input type="number" id="userInitialWeight" step="0.1" placeholder="Ex: 78.5" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Salvar e iniciar jornada</button>
             </form>
         </div>
     </div>
 
-    <!-- ==================== MENU LATERAL ==================== -->
-    <nav class="sidebar">
-        <h2>Life OS</h2>
-        <a href="index.html">🏠 Visão Geral</a>
-        <a href="#">🏋️ Saúde & Treino</a>
-        <a href="#">📅 Calendário</a>
-        <a href="diario.html">📖 Meu Diário</a>
-    </nav>
+    <div class="app-shell">
+        <div id="navOverlay" class="nav-overlay"></div>
 
-    <!-- ==================== PAINEL PRINCIPAL ==================== -->
-    <main class="main-content">
-        <div class="header">
-            <h1 id="welcomeTitle">Resumo de Hoje</h1>
-            <p id="profileSummary">Aguardando dados de perfil...</p>
+        <!-- ==================== MENU LATERAL ==================== -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand"><span class="brand-mark">L</span><span class="brand-name">Life OS</span></div>
+                <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Fechar menu"><i data-lucide="x"></i></button>
+            </div>
+            <div class="sidebar-nav">
+                <a href="index.html" class="nav-link active"><i data-lucide="home"></i><span>Visão Geral</span></a>
+                <a href="treino.html" class="nav-link"><i data-lucide="dumbbell"></i><span>Saúde & Treino</span></a>
+                <a href="calendario.html" class="nav-link"><i data-lucide="calendar"></i><span>Calendário</span></a>
+                <a href="diario.html" class="nav-link"><i data-lucide="book-open"></i><span>Meu Diário</span></a>
+            </div>
+            <div class="sidebar-footer">
+                <a href="configuracoes.html" class="nav-link"><i data-lucide="settings"></i><span>Configurações</span></a>
+            </div>
+        </nav>
+
+        <div class="app-main">
+            <!-- ==================== TOPO ==================== -->
+            <header class="topbar">
+                <button class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu"><i data-lucide="menu"></i></button>
+                <div class="topbar-title">
+                    <h1 id="welcomeTitle">Resumo de Hoje</h1>
+                    <p id="profileSummary">Aguardando dados de perfil...</p>
+                </div>
+                <div class="topbar-actions">
+                    <a href="configuracoes.html" class="btn btn-secondary btn-sm">Editar perfil</a>
+                    <button class="icon-btn" id="themeToggleBtn" aria-label="Alternar tema"><i data-lucide="moon"></i></button>
+                </div>
+            </header>
+
+            <!-- ==================== CONTEÚDO ==================== -->
+            <main class="page-content">
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i data-lucide="scale"></i></div>
+                        <div>
+                            <div class="stat-value" id="statPesoAtual">--</div>
+                            <div class="stat-label" id="statPesoLabel">Peso atual</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i data-lucide="flame"></i></div>
+                        <div>
+                            <div class="stat-value" id="statStreak">0 dias</div>
+                            <div class="stat-label">Sequência de treino</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i data-lucide="book-open"></i></div>
+                        <div>
+                            <div class="stat-value" id="statDiario">0</div>
+                            <div class="stat-label">Registros no diário</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+
+                    <!-- Card: Registro Diário de Saúde -->
+                    <div class="card">
+                        <div class="card-header"><i data-lucide="activity"></i><h3>Monitoramento Físico</h3></div>
+
+                        <div class="form-group">
+                            <label for="dailyWeight">Peso do dia (kg)</label>
+                            <input type="number" id="dailyWeight" step="0.1" placeholder="Ex: 78.2">
+                        </div>
+                        <div class="form-group">
+                            <label for="dailyCalories">Calorias consumidas</label>
+                            <input type="number" id="dailyCalories" placeholder="Ex: 2400">
+                        </div>
+
+                        <button type="button" id="btnSaveHealth" class="btn btn-primary btn-block">Salvar registro</button>
+                        <p id="healthFeedback" class="feedback"></p>
+                    </div>
+
+                    <!-- Card: Rotina de Treino -->
+                    <div class="card">
+                        <div class="card-header"><i data-lucide="dumbbell"></i><h3>Treino de Hoje</h3></div>
+
+                        <p style="margin-bottom: 10px; color: var(--text-secondary); font-size: 13.5px;">
+                            Status: <span id="treinoStatus" class="badge badge-danger">Pendente</span>
+                        </p>
+
+                        <button type="button" id="btnTreino" class="btn btn-primary btn-block">Marcar como concluído</button>
+                        <a href="treino.html" class="btn btn-ghost btn-block" style="margin-top: 8px;">Ver plano completo</a>
+                    </div>
+
+                    <!-- Card: Diário Rápido -->
+                    <div class="card">
+                        <div class="card-header"><i data-lucide="pencil-line"></i><h3>Como foi o dia?</h3></div>
+                        <textarea id="textoDiario" rows="4" placeholder="Escreva os principais acontecimentos ou reflexões de hoje..."></textarea>
+                        <button type="button" id="btnSalvarDiario" class="btn btn-primary btn-block" style="margin-top: 10px;">Salvar registro</button>
+                        <a href="diario.html" class="btn btn-ghost btn-block" style="margin-top: 8px;">Ver histórico completo</a>
+                        <p id="diarioFeedback" class="feedback"></p>
+                    </div>
+
+                    <!-- Card: Gráfico de Peso -->
+                    <div class="card" style="min-width: 380px;">
+                        <div class="card-header"><i data-lucide="trending-down"></i><h3>Evolução do Peso</h3></div>
+                        <canvas id="graficoPeso" height="200"></canvas>
+                    </div>
+
+                    <!-- Card: Gráfico de Calorias -->
+                    <div class="card" style="min-width: 380px;">
+                        <div class="card-header"><i data-lucide="bar-chart-3"></i><h3>Calorias Consumidas</h3></div>
+                        <canvas id="graficoCalorias" height="200"></canvas>
+                    </div>
+                </div>
+            </main>
         </div>
+    </div>
 
-        <div class="dashboard-grid">
-
-            <!-- Card 1: Registro Diário de Saúde -->
-            <div class="card">
-                <h3>Monitoramento Físico</h3>
-                <label for="dailyWeight">Peso do dia (kg):</label>
-                <input type="number" id="dailyWeight" step="0.1" placeholder="Ex: 78.2">
-
-                <label for="dailyCalories">Calorias consumidas:</label>
-                <input type="number" id="dailyCalories" placeholder="Ex: 2400">
-
-                <button type="button" id="btnSaveHealth">Salvar Registro</button>
-
-                <p id="healthFeedback"
-                    style="margin-top: 15px; font-weight: bold; font-size: 14px; text-align: center;"></p>
-            </div>
-
-            <!-- Card 2: Rotina de Treino -->
-            <div class="card">
-                <h3>Treino de Hoje</h3>
-                <p><strong>Horário:</strong> 06:00 às 07:50</p>
-
-                <p><strong>Status:</strong> <span id="treinoStatus"
-                        style="color: #e74c3c; font-weight: bold;">Pendente</span></p>
-
-                <br>
-                <button type="button" id="btnTreino" style="background-color: #27ae60;">Marcar como Concluído</button>
-            </div>
-
-            <!-- Card 3: Diário Rápido -->
-            <div class="card">
-                <h3>Como foi o dia?</h3>
-                <textarea id="textoDiario" rows="4"
-                    placeholder="Escreva os principais acontecimentos ou reflexões de hoje..."></textarea>
-                <button type="button" id="btnSalvarDiario">Salvar Registro</button>
-                <p id="diarioFeedback" style="margin-top: 10px; font-size: 13px; font-weight: bold;"></p>
-            </div>
-
-            <!-- Card 4: Gráfico de Evolução -->
-            <div class="card" style="flex: 1 1 100%;">
-                <h3>📉 Evolução do Marco Zero</h3>
-                <canvas id="graficoPeso" height="80"></canvas>
-            </div>
-        </div>
-    </main>
-
-    <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
-    <script src="script.js"></script>
+    <script src="utils.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 
-</html> 
+</html>

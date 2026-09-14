@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life OS · Configurações</title>
+
+    <script>
+        (function () {
+            var pref = localStorage.getItem('lifeOS_theme') || 'system';
+            var theme = pref === 'system'
+                ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                : pref;
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%236366f1'/%3E%3Ctext x='12' y='17' font-size='13' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="app-shell">
+        <div id="navOverlay" class="nav-overlay"></div>
+
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand"><span class="brand-mark">L</span><span class="brand-name">Life OS</span></div>
+                <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Fechar menu"><i data-lucide="x"></i></button>
+            </div>
+            <div class="sidebar-nav">
+                <a href="index.html" class="nav-link"><i data-lucide="home"></i><span>Visão Geral</span></a>
+                <a href="treino.html" class="nav-link"><i data-lucide="dumbbell"></i><span>Saúde & Treino</span></a>
+                <a href="calendario.html" class="nav-link"><i data-lucide="calendar"></i><span>Calendário</span></a>
+                <a href="diario.html" class="nav-link"><i data-lucide="book-open"></i><span>Meu Diário</span></a>
+            </div>
+            <div class="sidebar-footer">
+                <a href="configuracoes.html" class="nav-link active"><i data-lucide="settings"></i><span>Configurações</span></a>
+            </div>
+        </nav>
+
+        <div class="app-main">
+            <header class="topbar">
+                <button class="icon-btn nav-toggle" id="navToggle" aria-label="Abrir menu"><i data-lucide="menu"></i></button>
+                <div class="topbar-title">
+                    <h1>Configurações</h1>
+                    <p>Perfil, aparência e seus dados</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="icon-btn" id="themeToggleBtn" aria-label="Alternar tema"><i data-lucide="moon"></i></button>
+                </div>
+            </header>
+
+            <main class="page-content" style="max-width: 640px;">
+
+                <!-- Perfil -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Perfil</div>
+                    <div class="card">
+                        <form id="profileEditForm">
+                            <div class="form-group">
+                                <label for="editUserName">Seu nome</label>
+                                <input type="text" id="editUserName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editUserHeight">Sua altura (cm)</label>
+                                <input type="number" id="editUserHeight" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editUserInitialWeight">Peso inicial / Marco Zero (kg)</label>
+                                <input type="number" step="0.1" id="editUserInitialWeight" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar perfil</button>
+                            <p id="profileFeedback" class="feedback"></p>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Aparência -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Aparência</div>
+                    <div class="card">
+                        <label style="margin-bottom: 12px;">Tema</label>
+                        <div class="radio-group" id="themeRadioGroup">
+                            <div class="radio-option" data-value="light"><i data-lucide="sun"></i> Claro</div>
+                            <div class="radio-option" data-value="dark"><i data-lucide="moon"></i> Escuro</div>
+                            <div class="radio-option" data-value="system"><i data-lucide="monitor"></i> Sistema</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dados -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Seus dados</div>
+                    <div class="card">
+                        <p style="color: var(--text-secondary); font-size: 13.5px; margin-bottom: 14px;">
+                            Todos os seus dados ficam salvos apenas neste navegador. Faça backup regularmente para não os perder.
+                        </p>
+                        <div class="settings-actions-row">
+                            <button type="button" id="btnExportar" class="btn btn-secondary"><i data-lucide="download"></i> Exportar backup (.json)</button>
+                            <button type="button" id="btnImportarTrigger" class="btn btn-secondary"><i data-lucide="upload"></i> Importar backup</button>
+                            <input type="file" id="btnImportar" accept="application/json" class="hidden-file-input">
+                        </div>
+                        <p id="dadosFeedback" class="feedback"></p>
+                    </div>
+                </div>
+
+                <!-- Zona de perigo -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Zona de perigo</div>
+                    <div class="danger-zone">
+                        <p>Isso apaga permanentemente todos os dados do Life OS salvos neste navegador (perfil, diário, treinos e histórico). Não pode ser desfeito.</p>
+                        <button type="button" id="btnLimparDados" class="btn btn-danger">Apagar todos os dados</button>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="config.js"></script>
+</body>
+
+</html>
